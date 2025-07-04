@@ -18,12 +18,12 @@ interface InvoiceHeaderProps {
 
 export function InvoiceHeader({ invoice, onInvoiceChange }: InvoiceHeaderProps) {
   return (
-    <Card className="bg-muted border-sky-500/20 shadow-xl">
+    <Card className="bg-black border-gray-800">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <Logo size="md"/>
+          <Logo size="md" />
           <div className="text-right">
-            <CardTitle className="flex items-center gap-2 text-amber-400 text-xl">
+            <CardTitle className="flex items-center gap-2 text-white text-xl">
               <FileText className="h-6 w-6" />
               Invoice Details
             </CardTitle>
@@ -33,37 +33,37 @@ export function InvoiceHeader({ invoice, onInvoiceChange }: InvoiceHeaderProps) 
       <CardContent className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="invoice-number" className="text-amber-200 font-medium">
+            <Label htmlFor="invoice-number" className="text-gray-300 font-medium">
               Invoice Number
             </Label>
             <Input
               id="invoice-number"
               value={invoice.invoice_number}
               onChange={(e) => onInvoiceChange("invoice_number", e.target.value)}
-              className="bg-background border-amber-500/30 text-white focus:border-amber-400 focus:ring-amber-400/20"
+              className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="invoice-type" className="text-amber-200 font-medium">
+            <Label htmlFor="invoice-type" className="text-gray-300 font-medium">
               Invoice Type
             </Label>
             <Select
               value={invoice.type}
               onValueChange={(value: "tuition" | "product") => onInvoiceChange("type", value)}
             >
-              <SelectTrigger className="bg-background/50 border-amber-500/30 text-white focus:border-amber-400">
+              <SelectTrigger className="bg-gray-900 border-gray-700 text-white focus:border-gray-500">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-background border-amber-500/30">
-                <SelectItem value="tuition" className="text-white hover:bg-slate-700">
+              <SelectContent className="bg-gray-900 border-gray-700">
+                <SelectItem value="tuition" className="text-white hover:bg-gray-800">
                   <div className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-amber-400" />
+                    <GraduationCap className="h-4 w-4" />
                     Tuition Fee
                   </div>
                 </SelectItem>
-                <SelectItem value="product" className="text-white hover:bg-slate-700">
+                <SelectItem value="product" className="text-white hover:bg-gray-800">
                   <div className="flex items-center gap-2">
-                    <ShoppingBag className="h-4 w-4 text-amber-400" />
+                    <ShoppingBag className="h-4 w-4" />
                     Product Purchase
                   </div>
                 </SelectItem>
@@ -72,7 +72,7 @@ export function InvoiceHeader({ invoice, onInvoiceChange }: InvoiceHeaderProps) 
           </div>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="due-date" className="text-amber-200 font-medium">
+          <Label htmlFor="due-date" className="text-gray-300 font-medium">
             Due Date
           </Label>
           <Input
@@ -80,7 +80,7 @@ export function InvoiceHeader({ invoice, onInvoiceChange }: InvoiceHeaderProps) 
             type="date"
             value={invoice.due_date}
             onChange={(e) => onInvoiceChange("due_date", e.target.value)}
-            className="bg-background/50 border-amber-500/30 text-white focus:border-amber-400 focus:ring-amber-400/20"
+            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
           />
         </div>
       </CardContent>

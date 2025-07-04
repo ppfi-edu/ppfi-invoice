@@ -89,8 +89,8 @@ export function printInvoice() {
           }
           /* Copy relevant styles */
           .bg-white { background-color: white; }
-          .text-gray-900 { color: #111827; }
-          .text-gray-700 { color: #374151; }
+          .text-gray-300 { color: #111827; }
+          .text-gray-200 { color: #374151; }
           .text-gray-600 { color: #4b5563; }
           .text-amber-600 { color: #d97706; }
           .font-bold { font-weight: bold; }

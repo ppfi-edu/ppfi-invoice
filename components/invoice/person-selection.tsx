@@ -173,7 +173,6 @@ export function PersonSelection({
       return false
     }
 
-    // Check email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(newStudent.email)) {
       toast({ title: "Error", description: "Please enter a valid email address", variant: "destructive" })
@@ -201,7 +200,6 @@ export function PersonSelection({
       return false
     }
 
-    // Check email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(newClient.email)) {
       toast({ title: "Error", description: "Please enter a valid email address", variant: "destructive" })
@@ -297,51 +295,51 @@ export function PersonSelection({
   }
 
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-amber-500/20 shadow-xl">
+    <Card className="bg-black border-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-amber-400">
+        <CardTitle className="flex items-center gap-2 text-white">
           <User className="h-5 w-5" />
           Person Information
         </CardTitle>
       </CardHeader>
       <CardContent>
         {selectedPerson ? (
-          <div className="bg-background/50 p-6 rounded-lg border border-amber-500/20">
+          <div className="bg-gray-900 p-6 rounded-lg border border-gray-800">
             <div className="flex justify-between items-start mb-4">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 mb-2">
                   {"student_id" in selectedPerson ? (
-                    <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">
+                    <Badge className="bg-gray-800 text-white border-gray-700">
                       <User className="h-3 w-3 mr-1" />
                       Student
                     </Badge>
                   ) : (
-                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
+                    <Badge className="bg-gray-800 text-white border-gray-700">
                       <Building className="h-3 w-3 mr-1" />
                       Client
                     </Badge>
                   )}
                 </div>
                 <h3 className="font-semibold text-white text-lg">{selectedPerson.name}</h3>
-                <p className="text-amber-200">{selectedPerson.email}</p>
-                <p className="text-gray-300">{selectedPerson.phone}</p>
+                <p className="text-gray-300">{selectedPerson.email}</p>
+                <p className="text-gray-400">{selectedPerson.phone}</p>
                 {"student_id" in selectedPerson && (
                   <>
-                    <Badge variant="secondary" className="bg-amber-500/20 text-amber-300 border-amber-500/30">
+                    <Badge variant="secondary" className="bg-gray-800 text-gray-300 border-gray-700">
                       ID: {selectedPerson.student_id}
                     </Badge>
-                    <Badge variant="outline" className="border-amber-500/30 text-amber-300 ml-2">
+                    <Badge variant="outline" className="border-gray-700 text-gray-300 ml-2">
                       {selectedPerson.program}
                     </Badge>
                   </>
                 )}
-                {"address" in selectedPerson && <p className="text-gray-300 text-sm">{selectedPerson.address}</p>}
+                {"address" in selectedPerson && <p className="text-gray-400 text-sm">{selectedPerson.address}</p>}
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={onPersonClear}
-                className="border-amber-500/30 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 bg-transparent"
+                className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600 bg-transparent"
               >
                 Change
               </Button>
@@ -350,31 +348,28 @@ export function PersonSelection({
         ) : (
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium shadow-lg">
+              <Button className="w-full bg-white hover:bg-gray-200 text-black font-medium">
                 <Plus className="h-4 w-4 mr-2" />
                 Select or Add Person
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-slate-900 border-amber-500/30 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogContent className="bg-black border-gray-800 text-white max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-amber-400 text-xl">Select or Add Person</DialogTitle>
-                <DialogDescription className="text-gray-300">
+                <DialogTitle className="text-white text-xl">Select or Add Person</DialogTitle>
+                <DialogDescription className="text-gray-400">
                   Choose from existing people or add a new student/client
                 </DialogDescription>
               </DialogHeader>
 
               <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 bg-background border-amber-500/30">
+                <TabsList className="grid w-full grid-cols-2 bg-gray-900 border-gray-800">
                   <TabsTrigger
                     value="existing"
-                    className="data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-300"
+                    className="data-[state=active]:bg-gray-800 data-[state=active]:text-white"
                   >
                     Select Existing
                   </TabsTrigger>
-                  <TabsTrigger
-                    value="new"
-                    className="data-[state=active]:bg-amber-500/20 data-[state=active]:text-amber-300"
-                  >
+                  <TabsTrigger value="new" className="data-[state=active]:bg-gray-800 data-[state=active]:text-white">
                     Add New
                   </TabsTrigger>
                 </TabsList>
@@ -382,12 +377,12 @@ export function PersonSelection({
                 <TabsContent value="existing" className="space-y-4 mt-6">
                   <div className="flex gap-4 items-center">
                     <div className="relative flex-1">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-amber-400" />
+                      <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                       <Input
                         placeholder="Search by name, email, or ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10 bg-background border-amber-500/30 text-white focus:border-amber-400"
+                        className="pl-10 bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                       />
                     </div>
                     <div className="flex gap-2">
@@ -397,8 +392,8 @@ export function PersonSelection({
                         onClick={() => setPersonType("student")}
                         className={
                           personType === "student"
-                            ? "bg-amber-500 hover:bg-amber-600"
-                            : "border-amber-500/30 text-amber-300 hover:bg-amber-500/10 bg-transparent"
+                            ? "bg-white text-black hover:bg-gray-200"
+                            : "border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
                         }
                       >
                         <User className="h-4 w-4 mr-1" />
@@ -410,8 +405,8 @@ export function PersonSelection({
                         onClick={() => setPersonType("client")}
                         className={
                           personType === "client"
-                            ? "bg-amber-500 hover:bg-amber-600"
-                            : "border-amber-500/30 text-amber-300 hover:bg-amber-500/10 bg-transparent"
+                            ? "bg-white text-black hover:bg-gray-200"
+                            : "border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
                         }
                       >
                         <Building className="h-4 w-4 mr-1" />
@@ -425,24 +420,22 @@ export function PersonSelection({
                       ? filteredStudents.map((student) => (
                           <div
                             key={student.id}
-                            className="p-4 bg-background/50 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-all duration-200 border border-transparent hover:border-amber-500/30"
+                            className="p-4 bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-800 transition-all duration-200 border border-gray-800 hover:border-gray-700"
                             onClick={() => handlePersonSelect(student)}
                           >
                             <div className="flex justify-between items-center">
                               <div className="space-y-1">
                                 <div className="flex items-center gap-2">
                                   <h4 className="font-medium text-white">{student.name}</h4>
-                                  <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 text-xs">
-                                    Student
-                                  </Badge>
+                                  <Badge className="bg-gray-800 text-gray-300 border-gray-700 text-xs">Student</Badge>
                                 </div>
-                                <p className="text-sm text-amber-200">{student.email}</p>
-                                <p className="text-sm text-gray-300">{student.phone}</p>
+                                <p className="text-sm text-gray-300">{student.email}</p>
+                                <p className="text-sm text-gray-400">{student.phone}</p>
                                 <div className="flex gap-2 mt-2">
-                                  <Badge variant="outline" className="text-xs border-amber-500/30 text-amber-300">
+                                  <Badge variant="outline" className="text-xs border-gray-700 text-gray-300">
                                     {student.student_id}
                                   </Badge>
-                                  <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
+                                  <Badge className="bg-gray-800 text-gray-300 border-gray-700 text-xs">
                                     {student.program}
                                   </Badge>
                                 </div>
@@ -453,26 +446,24 @@ export function PersonSelection({
                       : filteredClients.map((client) => (
                           <div
                             key={client.id}
-                            className="p-4 bg-background/50 rounded-lg cursor-pointer hover:bg-slate-700/50 transition-all duration-200 border border-transparent hover:border-amber-500/30"
+                            className="p-4 bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-800 transition-all duration-200 border border-gray-800 hover:border-gray-700"
                             onClick={() => handlePersonSelect(client)}
                           >
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
                                 <h4 className="font-medium text-white">{client.name}</h4>
-                                <Badge className="bg-green-500/20 text-green-300 border-green-500/30 text-xs">
-                                  Client
-                                </Badge>
+                                <Badge className="bg-gray-800 text-gray-300 border-gray-700 text-xs">Client</Badge>
                               </div>
-                              <p className="text-sm text-amber-200">{client.email}</p>
-                              <p className="text-sm text-gray-300">{client.phone}</p>
-                              <p className="text-sm text-gray-400">{client.address}</p>
+                              <p className="text-sm text-gray-300">{client.email}</p>
+                              <p className="text-sm text-gray-400">{client.phone}</p>
+                              <p className="text-sm text-gray-500">{client.address}</p>
                             </div>
                           </div>
                         ))}
 
                     {((personType === "student" && filteredStudents.length === 0) ||
                       (personType === "client" && filteredClients.length === 0)) && (
-                      <div className="text-center py-8 text-gray-400">
+                      <div className="text-center py-8 text-gray-500">
                         <p>No {personType}s found</p>
                         <p className="text-sm mt-1">Try adjusting your search or add a new {personType}</p>
                       </div>
@@ -487,8 +478,8 @@ export function PersonSelection({
                       onClick={() => setPersonType("student")}
                       className={
                         personType === "student"
-                          ? "bg-amber-500 hover:bg-amber-600"
-                          : "border-amber-500/30 text-amber-300 hover:bg-amber-500/10 bg-transparent"
+                          ? "bg-white text-black hover:bg-gray-200"
+                          : "border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
                       }
                     >
                       <UserPlus className="h-4 w-4 mr-2" />
@@ -499,8 +490,8 @@ export function PersonSelection({
                       onClick={() => setPersonType("client")}
                       className={
                         personType === "client"
-                          ? "bg-amber-500 hover:bg-amber-600"
-                          : "border-amber-500/30 text-amber-300 hover:bg-amber-500/10 bg-transparent"
+                          ? "bg-white text-black hover:bg-gray-200"
+                          : "border-gray-700 text-gray-300 hover:bg-gray-800 bg-transparent"
                       }
                     >
                       <Building className="h-4 w-4 mr-2" />
@@ -512,59 +503,59 @@ export function PersonSelection({
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Full Name *</Label>
+                          <Label className="text-gray-300 font-medium">Full Name *</Label>
                           <Input
                             value={newStudent.name}
                             onChange={(e) => setNewStudent((prev) => ({ ...prev, name: e.target.value }))}
                             placeholder="Enter student name"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Email Address *</Label>
+                          <Label className="text-gray-300 font-medium">Email Address *</Label>
                           <Input
                             type="email"
                             value={newStudent.email}
                             onChange={(e) => setNewStudent((prev) => ({ ...prev, email: e.target.value }))}
                             placeholder="Enter email address"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Phone Number *</Label>
+                          <Label className="text-gray-300 font-medium">Phone Number *</Label>
                           <Input
                             value={newStudent.phone}
                             onChange={(e) => setNewStudent((prev) => ({ ...prev, phone: e.target.value }))}
                             placeholder="+855 12 345 678"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Student ID</Label>
+                          <Label className="text-gray-300 font-medium">Student ID</Label>
                           <Input
                             value={newStudent.student_id}
                             onChange={(e) => setNewStudent((prev) => ({ ...prev, student_id: e.target.value }))}
                             placeholder="Auto-generated if empty"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <Label className="text-amber-200 font-medium">Program *</Label>
+                        <Label className="text-gray-300 font-medium">Program *</Label>
                         <Select
                           value={newStudent.program}
                           onValueChange={(value) => setNewStudent((prev) => ({ ...prev, program: value }))}
                         >
-                          <SelectTrigger className="bg-background border-amber-500/30 text-white focus:border-amber-400">
+                          <SelectTrigger className="bg-gray-900 border-gray-700 text-white focus:border-gray-500">
                             <SelectValue placeholder="Select a program" />
                           </SelectTrigger>
-                          <SelectContent className="bg-background border-amber-500/30">
+                          <SelectContent className="bg-gray-900 border-gray-700">
                             {PROGRAMS.map((program) => (
-                              <SelectItem key={program} value={program} className="text-white hover:bg-slate-700">
+                              <SelectItem key={program} value={program} className="text-white hover:bg-gray-800">
                                 {program}
                               </SelectItem>
                             ))}
@@ -575,7 +566,7 @@ export function PersonSelection({
                       <Button
                         onClick={addNewStudent}
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium"
+                        className="w-full bg-white hover:bg-gray-200 text-black font-medium"
                       >
                         {isLoading ? "Adding Student..." : "Add Student"}
                       </Button>
@@ -584,50 +575,50 @@ export function PersonSelection({
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Company/Client Name *</Label>
+                          <Label className="text-gray-300 font-medium">Company/Client Name *</Label>
                           <Input
                             value={newClient.name}
                             onChange={(e) => setNewClient((prev) => ({ ...prev, name: e.target.value }))}
                             placeholder="Enter client name"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label className="text-amber-200 font-medium">Email Address *</Label>
+                          <Label className="text-gray-300 font-medium">Email Address *</Label>
                           <Input
                             type="email"
                             value={newClient.email}
                             onChange={(e) => setNewClient((prev) => ({ ...prev, email: e.target.value }))}
                             placeholder="Enter email address"
-                            className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                            className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                           />
                         </div>
                       </div>
 
                       <div className="space-y-2">
-                        <Label className="text-amber-200 font-medium">Phone Number *</Label>
+                        <Label className="text-gray-300 font-medium">Phone Number *</Label>
                         <Input
                           value={newClient.phone}
                           onChange={(e) => setNewClient((prev) => ({ ...prev, phone: e.target.value }))}
                           placeholder="+855 23 456 789"
-                          className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                          className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <Label className="text-amber-200 font-medium">Address *</Label>
+                        <Label className="text-gray-300 font-medium">Address *</Label>
                         <Input
                           value={newClient.address}
                           onChange={(e) => setNewClient((prev) => ({ ...prev, address: e.target.value }))}
                           placeholder="Enter full address"
-                          className="bg-background border-amber-500/30 text-white focus:border-amber-400"
+                          className="bg-gray-900 border-gray-700 text-white focus:border-gray-500"
                         />
                       </div>
 
                       <Button
                         onClick={addNewClient}
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium"
+                        className="w-full bg-white hover:bg-gray-200 text-black font-medium"
                       >
                         {isLoading ? "Adding Client..." : "Add Client"}
                       </Button>

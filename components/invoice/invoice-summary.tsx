@@ -32,9 +32,9 @@ export function InvoiceSummary({
   isValid,
 }: InvoiceSummaryProps) {
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-amber-500/20 shadow-xl sticky top-6">
+    <Card className="bg-black border-gray-800 sticky top-6">
       <CardHeader>
-        <CardTitle className="text-amber-400">Invoice Summary</CardTitle>
+        <CardTitle className="text-white">Invoice Summary</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">
@@ -43,20 +43,20 @@ export function InvoiceSummary({
             <span className="font-medium">${invoice.subtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center">
-            <Label className="text-amber-200 font-medium">Tax Rate (%):</Label>
+            <Label className="text-gray-300 font-medium">Tax Rate (%):</Label>
             <Input
               type="number"
               value={invoice.tax_rate}
               onChange={(e) => onTaxRateChange(Number.parseFloat(e.target.value) || 0)}
-              className="w-20 bg-background/50 border-amber-500/30 text-white text-right focus:border-amber-400"
+              className="w-20 bg-gray-900 border-gray-700 text-white text-right focus:border-gray-500"
             />
           </div>
           <div className="flex justify-between text-gray-300">
             <span>Tax Amount:</span>
             <span className="font-medium">${invoice.tax_amount.toFixed(2)}</span>
           </div>
-          <Separator className="bg-amber-500/30" />
-          <div className="flex justify-between text-2xl font-bold text-amber-400">
+          <Separator className="bg-gray-700" />
+          <div className="flex justify-between text-2xl font-bold text-white">
             <span>Total:</span>
             <span>${invoice.total.toFixed(2)}</span>
           </div>
@@ -66,7 +66,7 @@ export function InvoiceSummary({
           <Button
             onClick={onPreview}
             variant="outline"
-            className="w-full border-amber-500/30 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 bg-transparent"
+            className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600 bg-transparent"
             disabled={!isValid}
           >
             <Eye className="h-4 w-4 mr-2" />
@@ -78,7 +78,7 @@ export function InvoiceSummary({
               onClick={onExportPDF}
               variant="outline"
               size="sm"
-              className="border-amber-500/30 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 bg-transparent"
+              className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600 bg-transparent"
               disabled={!isValid}
             >
               <Download className="h-4 w-4 mr-1" />
@@ -88,7 +88,7 @@ export function InvoiceSummary({
               onClick={onPrint}
               variant="outline"
               size="sm"
-              className="border-amber-500/30 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 bg-transparent"
+              className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600 bg-transparent"
               disabled={!isValid}
             >
               <Printer className="h-4 w-4 mr-1" />
@@ -98,7 +98,7 @@ export function InvoiceSummary({
 
           <Button
             onClick={onSave}
-            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-medium shadow-lg"
+            className="w-full bg-white hover:bg-gray-200 text-black font-medium"
             disabled={!isValid}
           >
             <Save className="h-4 w-4 mr-2" />

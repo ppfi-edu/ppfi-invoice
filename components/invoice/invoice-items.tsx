@@ -23,16 +23,16 @@ interface InvoiceItemsProps {
 
 export function InvoiceItems({ items, onAddItem, onUpdateItem, onRemoveItem }: InvoiceItemsProps) {
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-amber-500/20 shadow-xl">
+    <Card className="bg-black border-gray-800">
       <CardHeader>
-        <CardTitle className="text-amber-400">Invoice Items</CardTitle>
-        <CardDescription className="text-gray-300">Add items to this invoice</CardDescription>
+        <CardTitle className="text-white">Invoice Items</CardTitle>
+        <CardDescription className="text-gray-400">Add items to this invoice</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         {items.map((item, index) => (
-          <div key={item.id} className="bg-background/50 p-6 rounded-lg border border-amber-500/10 space-y-4">
+          <div key={item.id} className="bg-gray-900 p-6 rounded-lg border border-gray-800 space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm text-amber-300 font-medium">Item #{index + 1}</span>
+              <span className="text-sm text-gray-300 font-medium">Item #{index + 1}</span>
               <Button
                 variant="ghost"
                 size="sm"
@@ -44,36 +44,36 @@ export function InvoiceItems({ items, onAddItem, onUpdateItem, onRemoveItem }: I
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="md:col-span-2 space-y-2">
-                <Label className="text-amber-200 font-medium">Description</Label>
+                <Label className="text-gray-300 font-medium">Description</Label>
                 <Input
                   value={item.description}
                   onChange={(e) => onUpdateItem(item.id, "description", e.target.value)}
                   placeholder="Item description"
-                  className="bg-slate-700/50 border-amber-500/30 text-white focus:border-amber-400"
+                  className="bg-gray-800 border-gray-700 text-white focus:border-gray-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-amber-200 font-medium">Quantity</Label>
+                <Label className="text-gray-300 font-medium">Quantity</Label>
                 <Input
                   type="number"
                   value={item.quantity}
                   onChange={(e) => onUpdateItem(item.id, "quantity", Number.parseInt(e.target.value) || 0)}
-                  className="bg-slate-700/50 border-amber-500/30 text-white focus:border-amber-400"
+                  className="bg-gray-800 border-gray-700 text-white focus:border-gray-500"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-amber-200 font-medium">Unit Price ($)</Label>
+                <Label className="text-gray-300 font-medium">Unit Price ($)</Label>
                 <Input
                   type="number"
                   step="0.01"
                   value={item.unit_price}
                   onChange={(e) => onUpdateItem(item.id, "unit_price", Number.parseFloat(e.target.value) || 0)}
-                  className="bg-slate-700/50 border-amber-500/30 text-white focus:border-amber-400"
+                  className="bg-gray-800 border-gray-700 text-white focus:border-gray-500"
                 />
               </div>
             </div>
             <div className="text-right">
-              <span className="text-xl font-bold text-amber-400">Total: ${item.total.toFixed(2)}</span>
+              <span className="text-xl font-bold text-white">Total: ${item.total.toFixed(2)}</span>
             </div>
           </div>
         ))}
@@ -81,7 +81,7 @@ export function InvoiceItems({ items, onAddItem, onUpdateItem, onRemoveItem }: I
         <Button
           onClick={onAddItem}
           variant="outline"
-          className="w-full border-amber-500/30 text-amber-300 hover:bg-amber-500/10 hover:border-amber-400 bg-transparent"
+          className="w-full border-gray-700 text-gray-300 hover:bg-gray-800 hover:border-gray-600 bg-transparent"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Item

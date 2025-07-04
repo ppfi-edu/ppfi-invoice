@@ -11,9 +11,9 @@ interface InvoiceNotesProps {
 
 export function InvoiceNotes({ notes, onNotesChange }: InvoiceNotesProps) {
   return (
-    <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-amber-500/20 shadow-xl">
+    <Card className="bg-black border-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-amber-400">
+        <CardTitle className="flex items-center gap-2 text-white">
           <FileText className="h-5 w-5" />
           Additional Notes
         </CardTitle>
@@ -23,7 +23,7 @@ export function InvoiceNotes({ notes, onNotesChange }: InvoiceNotesProps) {
           value={notes}
           onChange={(e) => onNotesChange(e.target.value)}
           placeholder="Add any additional notes, terms, or special instructions..."
-          className="bg-background/50 border-amber-500/30 text-white focus:border-amber-400 min-h-[100px]"
+          className="bg-gray-900 border-gray-700 text-white focus:border-gray-500 min-h-[100px]"
           rows={4}
         />
       </CardContent>
