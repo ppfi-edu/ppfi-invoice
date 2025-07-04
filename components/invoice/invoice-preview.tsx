@@ -1,7 +1,7 @@
 "use client"
 
 import { Badge } from "@/components/ui/badge"
-import { Logo } from "@/components/logo"
+import Logo from "@/components/logo"
 
 interface Student {
   id: string
