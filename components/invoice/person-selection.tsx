@@ -295,7 +295,7 @@ export function PersonSelection({
   }
 
   return (
-    <Card className="bg-black border-gray-800">
+    <Card className="bg-muted border-gray-800">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-white">
           <User className="h-5 w-5" />

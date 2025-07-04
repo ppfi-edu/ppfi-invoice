@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FileText, GraduationCap, ShoppingBag } from "lucide-react"
-import { Logo } from "@/components/logo"
+import Logo from "@/components/logo"
 
 interface InvoiceHeaderProps {
   invoice: {
