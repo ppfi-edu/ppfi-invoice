@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/hooks/use-toast"
-import { createClient } from "@/lib/supabase"
+import { createSupabaseClient } from "@/lib/supabase"
 
 interface Student {
   id: string
@@ -63,14 +63,19 @@ interface NewClientForm {
 }
 
 const PROGRAMS = [
-  "Fashion Design",
-  "Fashion Marketing",
-  "Fashion Business",
-  "Fashion Merchandising",
-  "Textile Design",
-  "Fashion Styling",
-  "Fashion Photography",
-  "Fashion Journalism",
+  "BFA",
+  "BSc",
+  "DFD",
+  "DFB",
+  "Fashion Design Studio-SC",
+  "Fashion Marketing-SC",
+  "Fashion Business-SC",
+  "Digital Fashion Illustration-SC",
+  "Fashion Illustration-SC",
+  "Fashion Styling-SC",
+  "Fashion Photography-SC",
+  "Trend Forecasting-SC",
+  "Pattern Development-SC",
 ]
 
 export function PersonSelection({
@@ -103,7 +108,7 @@ export function PersonSelection({
     address: "",
   })
 
-  const supabase = createClient()
+  const supabase = createSupabaseClient()
 
   const filteredStudents = students.filter(
     (student) =>
