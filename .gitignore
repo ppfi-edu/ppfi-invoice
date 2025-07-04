@@ -1,3 +1,10 @@
+/.next/
+/out/
+
+# production
+/build
+.vercel
+
 # Logs
 logs
 *.log
