@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "@/hooks/use-toast"
-import { createSupabaseClient } from "@/lib/supabase"
+import { createClient } from "@/lib/supabase"
 
 interface Student {
   id: string
@@ -63,10 +63,16 @@ interface NewClientForm {
 }
 
 const PROGRAMS = [
-  "BFA",
-  "BSc",
-  "DFD",
-  "DFB",
+  "BFA-SEMESTER",
+  "BFA-YEAR",
+  "BFA-INS",
+  "BSc-SEMESTER",
+  "BSc-YEAR",
+  "BSc-INS",
+  "DFD-SEMESTER",
+  "DFD-YEAR",
+  "DFB-SEMESTER",
+  "DFB-YEAR",
   "Fashion Design Studio-SC",
   "Fashion Marketing-SC",
   "Fashion Business-SC",
@@ -108,7 +114,7 @@ export function PersonSelection({
     address: "",
   })
 
-  const supabase = createSupabaseClient()
+  const supabase = createClient()
 
   const filteredStudents = students.filter(
     (student) =>
@@ -153,11 +159,12 @@ export function PersonSelection({
   }
 
   const generateStudentId = () => {
-    const year = new Date().getFullYear()
+    const fullYear = new Date().getFullYear()
+    const year = fullYear.toString().slice(-2)
     const randomNum = Math.floor(Math.random() * 1000)
       .toString()
       .padStart(3, "0")
-    return `PPFI${year}${randomNum}`
+    return `PPFI${year}-${randomNum}`
   }
 
   const validateStudentForm = (): boolean => {
@@ -304,7 +311,7 @@ export function PersonSelection({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-white">
           <User className="h-5 w-5" />
-          Person Information
+          Personal Information
         </CardTitle>
       </CardHeader>
       <CardContent>

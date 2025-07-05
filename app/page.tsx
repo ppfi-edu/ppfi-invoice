@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { createSupabaseClient } from "@/lib/supabase"
+import { createClient } from "@/lib/supabase"
 import { toast } from "@/hooks/use-toast"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
 import { InvoiceHeader } from "@/components/invoice/invoice-header"
@@ -69,7 +69,7 @@ export default function InvoiceIssuer() {
   const [selectedPerson, setSelectedPerson] = useState<Student | Client | null>(null)
   const [showPreview, setShowPreview] = useState(false)
 
-  const supabase = createSupabaseClient()
+  const supabase = createClient()
 
   useEffect(() => {
     fetchStudents()
