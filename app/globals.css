@@ -6,29 +6,24 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 346 77% 49%;
-    --primary-foreground: 355 100% 97%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 0 0% 0%;
     --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 80%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
     --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 85.7% 97.3%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
     --border: 0 0% 20%;
     --input: 0 0% 20%;
-    --ring: 346 77% 49%;
+    --ring: 0 0% 83%;
     --radius: 0.5rem;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
   }
 }
 
@@ -36,89 +31,23 @@
   * {
     @apply border-border;
   }
-  
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Luxurious scrollbar styling */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-  border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
-  border-radius: 6px;
-  border: 2px solid #0f172a;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
-}
-
-/* Custom animations for luxurious feel */
-@keyframes shimmer {
-  0% {
-    background-position: -200px 0;
-  }
-  
-  100% {
-    background-position: calc(200px + 100%) 0;
-  }
-}
-
-.shimmer {
-  background: linear-gradient(90deg, transparent, rgba(251, 191, 36, 0.1), transparent);
-  background-size: 200px 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Enhanced focus states */
-.focus-luxury:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.3);
-  border-color: #f59e0b;
-}
-
-/* Gradient text utilities */
-.text-gradient-gold {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Print styles */
 @media print {
-  body {
-    background: white !important;
-    color: black !important;
+  body * {
+    visibility: hidden;
   }
-  
-  .no-print {
-    display: none !important;
+  .print\:block,
+  .print\:block * {
+    visibility: visible;
   }
-  
-  .print-break {
-    page-break-before: always;
+  .print\:shadow-none {
+    box-shadow: none !important;
   }
-  
-  .print-avoid-break {
-    page-break-inside: avoid;
+  @page {
+    margin: 1in;
   }
-}
-
-/* Enhanced card shadows for luxury feel */
-.luxury-card {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(251, 191, 36, 0.1);
-}
-
-.luxury-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(251, 191, 36, 0.2);
 }

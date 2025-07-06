@@ -1,163 +1,238 @@
-import jsPDF from "jspdf"
-import html2canvas from "html2canvas"
+"use client"
 
-export async function generateInvoicePDF(invoiceNumber: string) {
-  const element = document.getElementById("invoice-preview")
-  if (!element) {
-    throw new Error("Invoice preview element not found")
-  }
-
-  try {
-    // Create canvas from the invoice preview
-    const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: "#ffffff",
-    })
-
-    const imgData = canvas.toDataURL("image/png")
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    })
-
-    const imgWidth = 210
-    const pageHeight = 295
-    const imgHeight = (canvas.height * imgWidth) / canvas.width
-    let heightLeft = imgHeight
-
-    let position = 0
-
-    // Add first page
-    pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight)
-    heightLeft -= pageHeight
-
-    // Add additional pages if needed
-    while (heightLeft >= 0) {
-      position = heightLeft - imgHeight
-      pdf.addPage()
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight)
-      heightLeft -= pageHeight
-    }
-
-    // Save the PDF
-    pdf.save(`${invoiceNumber}.pdf`)
-  } catch (error) {
-    console.error("Error generating PDF:", error)
-    throw new Error("Failed to generate PDF")
-  }
+export interface InvoicePDFOptions {
+  filename?: string
+  quality?: number
 }
 
-export function printInvoice() {
-  const element = document.getElementById("invoice-preview")
-  if (!element) {
-    throw new Error("Invoice preview element not found")
+export class InvoicePDFGenerator {
+  private options: Required<InvoicePDFOptions>
+
+  constructor(options: InvoicePDFOptions = {}) {
+    this.options = {
+      filename: options.filename || "invoice.pdf",
+      quality: options.quality || 1.5,
+    }
   }
 
-  // Create a new window for printing
-  const printWindow = window.open("", "_blank")
-  if (!printWindow) {
-    throw new Error("Failed to open print window")
-  }
+  async generateFromElement(element: HTMLElement): Promise<void> {
+    try {
+      // Dynamically import jsPDF and html2canvas
+      const [{ default: jsPDF }, { default: html2canvas }] = await Promise.all([import("jspdf"), import("html2canvas")])
 
-  // Get the invoice HTML content
-  const invoiceHTML = element.outerHTML
+      // Create a clone of the element
+      const clonedElement = element.cloneNode(true) as HTMLElement
 
-  // Create print-friendly HTML
-  const printHTML = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Invoice Print</title>
-        <style>
-          body {
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
-            background: white;
+      // Apply print styles
+      this.applyPrintStyles(clonedElement)
+
+      // Temporarily add to DOM
+      clonedElement.style.position = "absolute"
+      clonedElement.style.left = "-9999px"
+      clonedElement.style.top = "0"
+      clonedElement.style.zIndex = "-1"
+      document.body.appendChild(clonedElement)
+
+      // Generate canvas
+      const canvas = await html2canvas(clonedElement, {
+        scale: this.options.quality,
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: "#ffffff",
+        width: 794, // A4 width at 96 DPI
+        height: 1123, // A4 height at 96 DPI
+        scrollX: 0,
+        scrollY: 0,
+      })
+
+      // Remove cloned element
+      document.body.removeChild(clonedElement)
+
+      // Create PDF
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      })
+
+      // Get PDF dimensions
+      const pdfWidth = pdf.internal.pageSize.getWidth()
+      const pdfHeight = pdf.internal.pageSize.getHeight()
+
+      // Calculate image dimensions to fit A4
+      const imgWidth = pdfWidth
+      const imgHeight = (canvas.height * pdfWidth) / canvas.width
+
+      // Add image to PDF
+      const imgData = canvas.toDataURL("image/png", 1.0)
+
+      if (imgHeight <= pdfHeight) {
+        // Single page
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight)
+      } else {
+        // Multiple pages
+        let position = 0
+        let remainingHeight = imgHeight
+
+        while (remainingHeight > 0) {
+          const pageHeight = Math.min(pdfHeight, remainingHeight)
+
+          if (position > 0) {
+            pdf.addPage()
           }
-          @media print {
-            body {
+
+          pdf.addImage(imgData, "PNG", 0, -position, imgWidth, imgHeight)
+
+          position += pdfHeight
+          remainingHeight -= pdfHeight
+        }
+      }
+
+      // Save PDF
+      pdf.save(this.options.filename)
+    } catch (error) {
+      console.error("Error generating PDF:", error)
+      throw new Error("Failed to generate PDF. Please try again.")
+    }
+  }
+
+  private applyPrintStyles(element: HTMLElement): void {
+    // Set A4 dimensions
+    element.style.width = "794px" // A4 width in pixels
+    element.style.minHeight = "1123px" // A4 height in pixels
+    element.style.backgroundColor = "white"
+    element.style.color = "black"
+    element.style.fontSize = "14px"
+    element.style.lineHeight = "1.4"
+    element.style.fontFamily = "Arial, sans-serif"
+    element.style.padding = "40px"
+    element.style.boxSizing = "border-box"
+    element.style.margin = "0"
+
+    // Remove shadows and backgrounds from all elements
+    const allElements = element.querySelectorAll("*")
+    allElements.forEach((el) => {
+      const htmlEl = el as HTMLElement
+      htmlEl.style.boxShadow = "none"
+      htmlEl.style.textShadow = "none"
+
+      // Keep only essential backgrounds
+      if (!htmlEl.classList.contains("keep-bg")) {
+        htmlEl.style.backgroundColor = "transparent"
+      }
+    })
+
+    // Hide no-print elements
+    const noPrintElements = element.querySelectorAll(".no-print")
+    noPrintElements.forEach((el) => {
+      const htmlEl = el as HTMLElement
+      htmlEl.style.display = "none"
+    })
+  }
+
+  async printElement(element: HTMLElement): Promise<void> {
+    try {
+      // Create print content
+      const printContent = this.createPrintContent(element)
+
+      // Create new window
+      const printWindow = window.open("", "_blank", "width=800,height=600")
+      if (!printWindow) {
+        throw new Error("Could not open print window. Please allow popups.")
+      }
+
+      // Write content to new window
+      printWindow.document.write(printContent)
+      printWindow.document.close()
+
+      // Wait for images to load then print
+      printWindow.onload = () => {
+        setTimeout(() => {
+          printWindow.print()
+          setTimeout(() => {
+            printWindow.close()
+          }, 100)
+        }, 500)
+      }
+    } catch (error) {
+      console.error("Error printing:", error)
+      throw new Error("Failed to print invoice. Please try again.")
+    }
+  }
+
+  private createPrintContent(element: HTMLElement): string {
+    const clonedElement = element.cloneNode(true) as HTMLElement
+    this.applyPrintStyles(clonedElement)
+
+    return `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Invoice</title>
+          <meta charset="utf-8">
+          <style>
+            @page {
+              size: A4;
+              margin: 0;
+            }
+            
+            * {
               margin: 0;
               padding: 0;
+              box-sizing: border-box;
             }
+            
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 14px;
+              line-height: 1.4;
+              color: black;
+              background: white;
+              width: 210mm;
+              min-height: 297mm;
+              margin: 0 auto;
+            }
+            
             .no-print {
               display: none !important;
             }
-          }
-          /* Copy relevant styles */
-          .bg-white { background-color: white; }
-          .text-gray-300 { color: #111827; }
-          .text-gray-200 { color: #374151; }
-          .text-gray-600 { color: #4b5563; }
-          .text-amber-600 { color: #d97706; }
-          .font-bold { font-weight: bold; }
-          .font-semibold { font-weight: 600; }
-          .font-medium { font-weight: 500; }
-          .text-xl { font-size: 1.25rem; }
-          .text-lg { font-size: 1.125rem; }
-          .text-sm { font-size: 0.875rem; }
-          .mb-8 { margin-bottom: 2rem; }
-          .mb-4 { margin-bottom: 1rem; }
-          .mb-3 { margin-bottom: 0.75rem; }
-          .mb-2 { margin-bottom: 0.5rem; }
-          .mb-1 { margin-bottom: 0.25rem; }
-          .mt-3 { margin-top: 0.75rem; }
-          .mt-2 { margin-top: 0.5rem; }
-          .p-8 { padding: 2rem; }
-          .p-6 { padding: 1.5rem; }
-          .p-4 { padding: 1rem; }
-          .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-          .px-4 { padding-left: 1rem; padding-right: 1rem; }
-          .pt-6 { padding-top: 1.5rem; }
-          .pt-3 { padding-top: 0.75rem; }
-          .pb-8 { padding-bottom: 2rem; }
-          .pb-2 { padding-bottom: 0.5rem; }
-          .border-b-2 { border-bottom-width: 2px; }
-          .border-b { border-bottom-width: 1px; }
-          .border-t-2 { border-top-width: 2px; }
-          .border-amber-500 { border-color: #f59e0b; }
-          .border-amber-200 { border-color: #fde68a; }
-          .border-gray-200 { border-color: #e5e7eb; }
-          .bg-gray-50 { background-color: #f9fafb; }
-          .bg-amber-50 { background-color: #fffbeb; }
-          .rounded-lg { border-radius: 0.5rem; }
-          .flex { display: flex; }
-          .justify-between { justify-content: space-between; }
-          .justify-end { justify-content: flex-end; }
-          .items-start { align-items: flex-start; }
-          .items-center { align-items: center; }
-          .text-center { text-align: center; }
-          .text-right { text-align: right; }
-          .text-left { text-align: left; }
-          .space-y-2 > * + * { margin-top: 0.5rem; }
-          .space-y-3 > * + * { margin-top: 0.75rem; }
-          .gap-4 { gap: 1rem; }
-          .gap-2 { gap: 0.5rem; }
-          .w-full { width: 100%; }
-          .w-80 { width: 20rem; }
-          table { border-collapse: collapse; width: 100%; }
-          th, td { border: 1px solid #e5e7eb; }
-          .grid { display: grid; }
-          .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-          .gap-12 { gap: 3rem; }
-          .leading-relaxed { line-height: 1.625; }
-        </style>
-      </head>
-      <body>
-        ${invoiceHTML}
-      </body>
-    </html>
-  `
-
-  printWindow.document.write(printHTML)
-  printWindow.document.close()
-
-  // Wait for content to load then print
-  printWindow.onload = () => {
-    printWindow.print()
-    printWindow.close()
+            
+            table {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            
+            th, td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+            }
+            
+            th {
+              background-color: #f5f5f5;
+              font-weight: bold;
+            }
+            
+            .keep-bg {
+              background-color: #f5f5f5 !important;
+            }
+          </style>
+        </head>
+        <body>
+          ${clonedElement.outerHTML}
+        </body>
+      </html>
+    `
   }
+}
+
+// Utility functions
+export async function generateInvoicePDF(element: HTMLElement, filename?: string): Promise<void> {
+  const generator = new InvoicePDFGenerator({ filename })
+  await generator.generateFromElement(element)
+}
+
+export async function printInvoice(element: HTMLElement): Promise<void> {
+  const generator = new InvoicePDFGenerator()
+  await generator.printElement(element)
 }
