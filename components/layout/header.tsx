@@ -1,4 +1,5 @@
 import { GraduationCap } from "lucide-react"
+import Image from "next/image"
 
 export function Header() {
   return (

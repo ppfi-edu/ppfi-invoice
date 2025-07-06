@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ArrowLeft, Download, Printer, Save } from "lucide-react"
 import { createClient } from "@/lib/supabase/client"
 import type { InvoiceData } from "./invoice-creator"
+import Image from "next/image"
 
 interface InvoicePreviewProps {
   invoiceData: InvoiceData
