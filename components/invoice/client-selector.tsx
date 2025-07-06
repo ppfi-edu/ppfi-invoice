@@ -22,17 +22,17 @@ export function ClientSelector({ clients, selectedClient, onClientSelect, onClie
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         <div className="flex-1">
           <Select
-            value={selectedClient?.idl
+            value={selectedClient?.id || ""}
             onValueChange={(value) => {
               const client = clients.find((c) => c.id === value)
               onClientSelect(client || null)
             }}
           >
-            <SelectTrigger className="bg-gray-950 border-gray-700 text-white h-10">
+            <SelectTrigger className="bg-gray-800 border-gray-700 text-white h-10">
               <SelectValue placeholder="Choose a client..." />
             </SelectTrigger>
             <SelectContent
-              className="bg-gray-950 border-gray-700"
+              className="bg-gray-800 border-gray-700"
               style={{ zIndex: 9999 }}
               position="popper"
               sideOffset={5}
